@@ -4,6 +4,7 @@ import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:rate_my_app/rate_my_app.dart';
+import 'package:skillatics/custom_icons_icons.dart';
 import 'package:skillatics/trainingPage.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -36,8 +37,6 @@ class _MyHomePageState extends State<MyHomePage> {
   int secLengthRest = 90; //=restDisplayedSec+restDisplayedMin in sekunden
   int anzRounds = 5;
 
-  var selectedArrows = [];
-
 //Werte, die in applescroll angezeigt werden aber nicht so an Page2 übergeben werden können weil Min und Sec gemischt
   int roundDisplayedSec = 30;
   int roundDisplayedMin = 3;
@@ -46,6 +45,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //Checkboxen, mit allen gewünschten Farben
   var selectedColors = [];
+  var selectedArrows = [];
+  var selectedNumbers = [];
+  var selectedItems = []; //total
 
 //Pop-Up in dem User nach Bewertung/Rezession schreiben gefragt wird
   final RateMyApp rateMyApp = RateMyApp(
@@ -81,11 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
     organizeArrowsColors();
 
     //überprüft, ob Werte gültig sind
-    if (this.selectedColors.length == 0 && this.selectedArrows.length == 0) {
+    if (this.selectedItems.length == 0 && this.selectedArrows.length == 0) {
       setState(() {
         this.textFehlermeldung = 'fehlerColorsNull'.tr;
       });
-    } else if (this.selectedColors.length == 1 && this.anzColorsOnPage > 1) {
+    } else if (this.selectedItems.length == 1 && this.anzColorsOnPage > 1) {
       setState(() {
         this.textFehlermeldung = 'fehlerColorsAnz'.tr;
       });
@@ -113,8 +115,9 @@ class _MyHomePageState extends State<MyHomePage> {
           context,
           MaterialPageRoute(
             builder: (context) => RandomColorPage2(
-              listSelectedColors: this.selectedColors,
+              listSelectedColors: this.selectedItems,
               listSelectedArrows: this.selectedArrows,
+              listSelectedNumbers: this.selectedNumbers,
               anzColorsOnPage: this.anzColorsOnPage,
               secChangeColor: this.secChangeColor,
               secLengthRound: this.secLengthRound,
@@ -132,13 +135,24 @@ class _MyHomePageState extends State<MyHomePage> {
    * Initializes selectedArrows[] and sets correct color for arrows in selectedcolors that there are only hex and no strings like 'north' etc
    */
   void organizeArrowsColors() {
-    for (int i = 0; i < selectedColors.length; i++) {
-      if (selectedColors[i].length != 6) {
-        selectedArrows.add(selectedColors[i]);
-        selectedColors[i] =
+    this.selectedItems = selectedColors + selectedNumbers + selectedArrows;
+    print("selectedColors:");
+    print(selectedColors);
+    print("selectedNumbers:");
+    print(selectedNumbers);
+    print("selectedArrows:");
+    print(selectedArrows);
+    print("selectedItems");
+    print(selectedItems);
+    for (int i = 0; i < selectedItems.length; i++) {
+      if (selectedItems[i].length != 6) {
+        //selectedArrows.add(selectedItems[i]);
+        selectedItems[i] =
             'fefefe'; //weisser hintergrund aber nicht ffffff damit später erkennbar dass dort arrows angezeigt werden müssen
       } //else ist bereits ein hexcode in selectedColors und kein arrow
     }
+    print("selectedItems nur hex");
+    print(selectedItems);
   }
 
   /**
@@ -353,6 +367,46 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
+      ],
+      onChange: (allSelectedItems, selectedItem) {
+        this.selectedColors = allSelectedItems;
+
+        rateMyApp.init().then((_) {
+          if (rateMyApp.shouldOpenDialog) {
+            rateMyApp.showRateDialog(
+              context,
+              title: 'bewertenTitel'.tr,
+              message: 'bewertenText'.tr,
+              rateButton: 'bewertenJetzt'.tr,
+              noButton: 'bewertenNein'.tr,
+              laterButton: 'bewertenSpaeter'.tr,
+              onDismissed: () =>
+                  rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed),
+            );
+          }
+        });
+      },
+    );
+  }
+
+  /**
+ * returnt ein MultiSelectContainer, in dem alle Pfeile ausgewählt werden können
+ */
+  MultiSelectContainer buildArrowselect() {
+    return MultiSelectContainer(
+      key: Key(this
+          .keyString), //https://jelenaaa.medium.com/how-to-force-widget-to-redraw-in-flutter-2eec703bc024
+      //UniqueKey(), //damit Unterschied in Widget entdeckt wird und somit Widget rebuild wird
+      prefix: MultiSelectPrefix(
+          selectedPrefix: const Padding(
+        padding: EdgeInsets.only(right: 5),
+        child: Icon(
+          Icons.check,
+          color: Colors.white,
+          size: 14,
+        ),
+      )),
+      items: [
         MultiSelectCard(
           value: 'north',
           child: Icon(Icons.north),
@@ -563,8 +617,299 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ],
       onChange: (allSelectedItems, selectedItem) {
-        this.selectedColors = allSelectedItems;
+        this.selectedArrows = allSelectedItems;
 
+        rateMyApp.init().then((_) {
+          if (rateMyApp.shouldOpenDialog) {
+            rateMyApp.showRateDialog(
+              context,
+              title: 'bewertenTitel'.tr,
+              message: 'bewertenText'.tr,
+              rateButton: 'bewertenJetzt'.tr,
+              noButton: 'bewertenNein'.tr,
+              laterButton: 'bewertenSpaeter'.tr,
+              onDismissed: () =>
+                  rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed),
+            );
+          }
+        });
+      },
+    );
+  }
+
+  /**
+ * returnt ein MultiSelectContainer, in dem alle Nummern ausgewählt werden können
+ */
+  MultiSelectContainer buildNumberselect() {
+    return MultiSelectContainer(
+      key: Key(this
+          .keyString), //https://jelenaaa.medium.com/how-to-force-widget-to-redraw-in-flutter-2eec703bc024
+      //UniqueKey(), //damit Unterschied in Widget entdeckt wird und somit Widget rebuild wird
+      prefix: MultiSelectPrefix(
+          selectedPrefix: const Padding(
+        padding: EdgeInsets.only(right: 5),
+        child: Icon(
+          Icons.check,
+          color: Colors.white,
+          size: 14,
+        ),
+      )),
+      items: [
+        MultiSelectCard(
+          value: 'one',
+          label: '1',
+          textStyles: const MultiSelectItemTextStyles(
+              textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              selectedTextStyle:
+                  TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          decorations: MultiSelectItemDecorations(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(),
+              ),
+              selectedDecoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all())),
+          prefix: MultiSelectPrefix(
+            selectedPrefix: const Padding(
+              padding: EdgeInsets.only(right: 5),
+              child: Icon(
+                Icons.check,
+                color: Colors.black,
+                size: 14,
+              ),
+            ),
+          ),
+        ),
+        MultiSelectCard(
+          value: 'two',
+          label: '2',
+          textStyles: const MultiSelectItemTextStyles(
+              textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              selectedTextStyle:
+                  TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          decorations: MultiSelectItemDecorations(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(),
+              ),
+              selectedDecoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all())),
+          prefix: MultiSelectPrefix(
+            selectedPrefix: const Padding(
+              padding: EdgeInsets.only(right: 5),
+              child: Icon(
+                Icons.check,
+                color: Colors.black,
+                size: 14,
+              ),
+            ),
+          ),
+        ),
+        MultiSelectCard(
+          value: 'three',
+          label: '3',
+          textStyles: const MultiSelectItemTextStyles(
+              textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              selectedTextStyle:
+                  TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          decorations: MultiSelectItemDecorations(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(),
+              ),
+              selectedDecoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all())),
+          prefix: MultiSelectPrefix(
+            selectedPrefix: const Padding(
+              padding: EdgeInsets.only(right: 5),
+              child: Icon(
+                Icons.check,
+                color: Colors.black,
+                size: 14,
+              ),
+            ),
+          ),
+        ),
+        MultiSelectCard(
+          value: 'four',
+          label: '4',
+          textStyles: const MultiSelectItemTextStyles(
+              textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              selectedTextStyle:
+                  TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          decorations: MultiSelectItemDecorations(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(),
+              ),
+              selectedDecoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all())),
+          prefix: MultiSelectPrefix(
+            selectedPrefix: const Padding(
+              padding: EdgeInsets.only(right: 5),
+              child: Icon(
+                Icons.check,
+                color: Colors.black,
+                size: 14,
+              ),
+            ),
+          ),
+        ),
+        MultiSelectCard(
+          value: 'five',
+          label: '5',
+          textStyles: const MultiSelectItemTextStyles(
+              textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              selectedTextStyle:
+                  TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          decorations: MultiSelectItemDecorations(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(),
+              ),
+              selectedDecoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all())),
+          prefix: MultiSelectPrefix(
+            selectedPrefix: const Padding(
+              padding: EdgeInsets.only(right: 5),
+              child: Icon(
+                Icons.check,
+                color: Colors.black,
+                size: 14,
+              ),
+            ),
+          ),
+        ),
+        MultiSelectCard(
+          value: 'six',
+          label: '6',
+          textStyles: const MultiSelectItemTextStyles(
+              textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              selectedTextStyle:
+                  TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          decorations: MultiSelectItemDecorations(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(),
+              ),
+              selectedDecoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all())),
+          prefix: MultiSelectPrefix(
+            selectedPrefix: const Padding(
+              padding: EdgeInsets.only(right: 5),
+              child: Icon(
+                Icons.check,
+                color: Colors.black,
+                size: 14,
+              ),
+            ),
+          ),
+        ),
+        MultiSelectCard(
+          value: 'seven',
+          label: '7',
+          textStyles: const MultiSelectItemTextStyles(
+              textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              selectedTextStyle:
+                  TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          decorations: MultiSelectItemDecorations(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(),
+              ),
+              selectedDecoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all())),
+          prefix: MultiSelectPrefix(
+            selectedPrefix: const Padding(
+              padding: EdgeInsets.only(right: 5),
+              child: Icon(
+                Icons.check,
+                color: Colors.black,
+                size: 14,
+              ),
+            ),
+          ),
+        ),
+        MultiSelectCard(
+          value: 'eight',
+          label: '8',
+          textStyles: const MultiSelectItemTextStyles(
+              textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              selectedTextStyle:
+                  TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          decorations: MultiSelectItemDecorations(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(),
+              ),
+              selectedDecoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all())),
+          prefix: MultiSelectPrefix(
+            selectedPrefix: const Padding(
+              padding: EdgeInsets.only(right: 5),
+              child: Icon(
+                Icons.check,
+                color: Colors.black,
+                size: 14,
+              ),
+            ),
+          ),
+        ),
+        MultiSelectCard(
+          value: 'nine',
+          label: '9',
+          textStyles: const MultiSelectItemTextStyles(
+              textStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              selectedTextStyle:
+                  TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+          decorations: MultiSelectItemDecorations(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(),
+              ),
+              selectedDecoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all())),
+          prefix: MultiSelectPrefix(
+            selectedPrefix: const Padding(
+              padding: EdgeInsets.only(right: 5),
+              child: Icon(
+                Icons.check,
+                color: Colors.black,
+                size: 14,
+              ),
+            ),
+          ),
+        ),
+      ],
+      onChange: (allSelectedItems, selectedItem) {
+        this.selectedNumbers = allSelectedItems;
         rateMyApp.init().then((_) {
           if (rateMyApp.shouldOpenDialog) {
             rateMyApp.showRateDialog(
@@ -631,14 +976,39 @@ class _MyHomePageState extends State<MyHomePage> {
               //Checkbox - Mit welchen Farben trainieren
               //SizedBox(height: 20,),
               Text(
-                'selFarben'.tr,
+                //'selFarben'.tr,
+                'Mit was möchtest du trainieren?',
                 style: TextStyle(fontSize: 15),
               ),
               SizedBox(height: 18),
+              Text(
+                'Farben',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+              SizedBox(height: 10),
               ConstrainedBox(
                 constraints: BoxConstraints(),
-                //evtl. noch flexibel machen und nicht hardcode falls sich anzahl ändert oder format des bildschirms
                 child: buildColorselect(),
+              ),
+              SizedBox(height: 15),
+              Text(
+                'Pfeile',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+              SizedBox(height: 10),
+              ConstrainedBox(
+                constraints: BoxConstraints(),
+                child: buildArrowselect(),
+              ),
+              SizedBox(height: 15),
+              Text(
+                'Zahlen',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+              SizedBox(height: 10),
+              ConstrainedBox(
+                constraints: BoxConstraints(),
+                child: buildNumberselect(),
               ),
               SizedBox(height: 15),
               Divider(

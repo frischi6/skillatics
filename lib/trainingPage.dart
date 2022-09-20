@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skillatics/custom_icons_icons.dart';
 import 'package:skillatics/menuPage.dart';
 
 class RandomColorPage2 extends StatefulWidget {
@@ -10,6 +11,7 @@ class RandomColorPage2 extends StatefulWidget {
       {Key? key,
       required this.listSelectedColors,
       required this.listSelectedArrows,
+      required this.listSelectedNumbers,
       required this.anzColorsOnPage,
       required this.secChangeColor,
       required this.secLengthRound,
@@ -20,6 +22,7 @@ class RandomColorPage2 extends StatefulWidget {
 
   var listSelectedColors;
   var listSelectedArrows;
+  var listSelectedNumbers;
   int anzColorsOnPage;
   int secChangeColor;
   int secLengthRound;
@@ -50,7 +53,11 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
     11,
     12
   ]; //nur Füllwerte
+
   var listWithSelectedArrows = [];
+  var listWithSelectedNumbers = [];
+  var listWithSelectedIcons =
+      []; //beinhaltet listWithSelectedArrows + listWithSelectedNumbers
   var listToFillContainersIcon = [
     Icon(Icons.north),
     Icon(Icons.north),
@@ -97,11 +104,17 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
   double thicknessVerticalDividerFooter = 0.5;
 
   void initState() {
+    print("1");
     _initializeSettinvariables();
+    print("2");
     _initializeListHeight4Containers();
+    print("3");
     _initializeListWithAllHex();
+    print("4");
     _initializeListSelectedArrows();
+    print("5");
     organizeRound();
+    print("6");
     _timer = Timer.periodic(
         Duration(seconds: 1),
         (Timer timer) => setState(() {
@@ -350,6 +363,17 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
 
   void _initializeListSelectedArrows() {
     this.listWithSelectedArrows = widget.listSelectedArrows;
+    _initializeListSelectedNumbers();
+    _initializeListSelectedIcons();
+  }
+
+  void _initializeListSelectedNumbers() {
+    this.listWithSelectedNumbers = widget.listSelectedNumbers;
+  }
+
+  void _initializeListSelectedIcons() {
+    this.listWithSelectedIcons =
+        this.listWithSelectedArrows + this.listWithSelectedNumbers;
   }
 
   /**
@@ -426,6 +450,33 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
       } else if (arrowDirection == 'southwest') {
         listToFillContainersIcon[index] =
             Icon(Icons.south_west, color: Colors.black, size: sizeIcon);
+      } else if (arrowDirection == 'one') {
+        listToFillContainersIcon[index] =
+            Icon(CustomIcons.one, color: Colors.black, size: sizeIcon);
+      } else if (arrowDirection == 'two') {
+        listToFillContainersIcon[index] =
+            Icon(CustomIcons.two, color: Colors.black, size: sizeIcon);
+      } else if (arrowDirection == 'three') {
+        listToFillContainersIcon[index] =
+            Icon(CustomIcons.three, color: Colors.black, size: sizeIcon);
+      } else if (arrowDirection == 'four') {
+        listToFillContainersIcon[index] =
+            Icon(CustomIcons.four, color: Colors.black, size: sizeIcon);
+      } else if (arrowDirection == 'five') {
+        listToFillContainersIcon[index] =
+            Icon(CustomIcons.five, color: Colors.black, size: sizeIcon);
+      } else if (arrowDirection == 'six') {
+        listToFillContainersIcon[index] =
+            Icon(CustomIcons.six, color: Colors.black, size: sizeIcon);
+      } else if (arrowDirection == 'seven') {
+        listToFillContainersIcon[index] =
+            Icon(CustomIcons.seven, color: Colors.black, size: sizeIcon);
+      } else if (arrowDirection == 'eight') {
+        listToFillContainersIcon[index] =
+            Icon(CustomIcons.eight, color: Colors.black, size: sizeIcon);
+      } else if (arrowDirection == 'nine') {
+        listToFillContainersIcon[index] =
+            Icon(CustomIcons.nine, color: Colors.black, size: sizeIcon);
       }
     } else {
       //arrow should not be visible
@@ -439,7 +490,7 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
    */
   void organizeRound() {
     _initializeListHeight4Containers(); //damit nach rest wieder alle Grössen der Container stimmen
-
+    print("nach initializeListHeight4Containers");
     this.currentSecsCD = secsLengthRoundCD;
     this.currentMinsCD = minsLengthRoundCD;
     int randomInt;
@@ -463,17 +514,22 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
         listToFillContainersHex[i] = listWithSelectedHex[randomInt];
       }
     }
-
+    print("vor organzie arrows");
     //organize arrows
     for (int i = 0; i < listToFillContainersHex.length; i++) {
       if (listToFillContainersHex[i] != int.parse('0xfffefefe')) {
         //arrow not visible
+        print("arrow not visible");
         addToListToFillContainersIcon(i, null, false);
+        print("arrow not visible finished");
       } else {
         //arrow visible
-        String arrowDirection = listWithSelectedArrows[
-            random.nextInt(listWithSelectedArrows.length)];
+        print("arrow visible");
+        String arrowDirection =
+            listWithSelectedIcons[random.nextInt(listWithSelectedIcons.length)];
+        print("arrow visible");
         addToListToFillContainersIcon(i, arrowDirection, true);
+        print("arrow visible finished");
       }
     }
   }
@@ -538,7 +594,7 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
         }
       } else {
         //isRound
-
+        print("is Round");
         //management change
         if (this.secsLengthRoundCD == 1 && this.minsLengthRoundCD == 0) {
           isRest = true;
@@ -548,6 +604,7 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
           this.secsLengthRoundCD = this.secLengthRound2 % 60;
           break outerloop;
         } else {
+          print("manage time");
           //management time
           if (this.secsLengthRoundCD > 0) {
             this.secsLengthRoundCD--;
@@ -559,29 +616,43 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
           this.currentSecsCD = this.secsLengthRoundCD;
         }
         //management color
+        print("manage color");
         if ((this.secLengthRound2 -
                         (this.secsLengthRoundCD +
                             this.minsLengthRoundCD * 60)) %
                     this.secChangeColor2 ==
                 0 &&
             (this.secsLengthRoundCD != 0 || this.minsLengthRoundCD != 0)) {
+          print("in if -> color wechseln");
           //color wechseln
           for (var i = 0; i < this.anzColorsOnPage2; i++) {
+            print("a");
             randomInt = random.nextInt(listWithSelectedColors.length);
+            print("b");
 
             //damit nicht gleiche Farben aufs Mal angezeigt werden
             if (i == 0) {
+              print("c");
               listToFillContainersHex[i] = listWithSelectedHex[randomInt];
+              print("d");
               colorRestText = listToFillContainersHex[i];
+              print("e");
             } else {
+              print("f");
               while (listToFillContainersHex[i - 1] ==
                   listWithSelectedHex[randomInt]) {
+                print("in while");
                 randomInt = random.nextInt(listWithSelectedColors.length);
+                print("ende in while");
               }
+              print("g");
               listToFillContainersHex[i] = listWithSelectedHex[randomInt];
+              print("h");
             }
+            print("z");
           }
 
+          print("organize arrows");
           //organize arrows
           for (int i = 0; i < listToFillContainersHex.length; i++) {
             if (listToFillContainersHex[i] != int.parse('0xfffefefe')) {
@@ -589,14 +660,16 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
               addToListToFillContainersIcon(i, null, false);
             } else {
               //arrow visible
-              String arrowDirection = listWithSelectedArrows[
-                  random.nextInt(listWithSelectedArrows.length)];
+              String arrowDirection = listWithSelectedIcons[
+                  random.nextInt(listWithSelectedIcons.length)];
               addToListToFillContainersIcon(i, arrowDirection, true);
             }
           }
+          print("organize arrows fertig");
         }
       }
     } else {
+      print("timer wird gecancelt");
       this._timer.cancel();
       showDialog(
           context: context,
@@ -604,6 +677,7 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
           barrierDismissible: false);
       //Navigator.push(context, MaterialPageRoute(builder: (context) => alertDialog()));
     }
+    print("fertig if else");
   }
 
   /**
@@ -678,6 +752,7 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
             builder: (context) => RandomColorPage2(
                   listSelectedColors: this.listWithSelectedColors,
                   listSelectedArrows: this.listWithSelectedArrows,
+                  listSelectedNumbers: this.listWithSelectedNumbers,
                   anzColorsOnPage: this.anzColorsOnPage2,
                   secChangeColor: this.secChangeColor2,
                   secLengthRound: this.secLengthRound2,
