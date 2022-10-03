@@ -39,6 +39,7 @@ dependencies:
   flutter_multi_select_items: ^0.4.0 #für Farbauswahl
   rate_my_app: ^1.1.2 #damit User von Zeit zu Zeit nach einer Bewertung gefragt wird
   get: #damit app zweisprachig ist
+  flutter_launcher_icons: ^0.10.0 #um icon und titel/name auf homebildschirm zu ändern
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +56,12 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/skillatics_weiss.png"
 
 # The following section is specific to Flutter.
 flutter:

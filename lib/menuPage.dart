@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //Pop-Up in dem User nach Bewertung/Rezession schreiben gefragt wird
   final RateMyApp rateMyApp = RateMyApp(
-    minDays: 0,
+    minDays: 7,
     minLaunches: 1,
     remindDays: 0,
     remindLaunches: 1,
