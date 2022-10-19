@@ -51,10 +51,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //Pop-Up in dem User nach Bewertung/Rezession schreiben gefragt wird
   final RateMyApp rateMyApp = RateMyApp(
-    minDays: 7,
+    minDays: 0,
     minLaunches: 1,
-    remindDays: 0,
-    remindLaunches: 1,
+    remindDays: 9,
+    remindLaunches: 4,
+    //googlePlayIdentifier: https://www.youtube.com/watch?v=aoq5VDku2Bc
+    //appStoreIdentifier: diese hat man noch nicht wenn noch nicht in store
   );
 
 /**
@@ -360,21 +362,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
       onChange: (allSelectedItems, selectedItem) {
         this.selectedColors = allSelectedItems;
-
-        rateMyApp.init().then((_) {
-          if (rateMyApp.shouldOpenDialog) {
-            rateMyApp.showRateDialog(
-              context,
-              title: 'bewertenTitel'.tr,
-              message: 'bewertenText'.tr,
-              rateButton: 'bewertenJetzt'.tr,
-              noButton: 'bewertenNein'.tr,
-              laterButton: 'bewertenSpaeter'.tr,
-              onDismissed: () =>
-                  rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed),
-            );
-          }
-        });
       },
     );
   }
@@ -608,21 +595,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
       onChange: (allSelectedItems, selectedItem) {
         this.selectedArrows = allSelectedItems;
-
-        rateMyApp.init().then((_) {
-          if (rateMyApp.shouldOpenDialog) {
-            rateMyApp.showRateDialog(
-              context,
-              title: 'bewertenTitel'.tr,
-              message: 'bewertenText'.tr,
-              rateButton: 'bewertenJetzt'.tr,
-              noButton: 'bewertenNein'.tr,
-              laterButton: 'bewertenSpaeter'.tr,
-              onDismissed: () =>
-                  rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed),
-            );
-          }
-        });
       },
     );
   }
@@ -900,20 +872,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
       onChange: (allSelectedItems, selectedItem) {
         this.selectedNumbers = allSelectedItems;
-        rateMyApp.init().then((_) {
-          if (rateMyApp.shouldOpenDialog) {
-            rateMyApp.showRateDialog(
-              context,
-              title: 'bewertenTitel'.tr,
-              message: 'bewertenText'.tr,
-              rateButton: 'bewertenJetzt'.tr,
-              noButton: 'bewertenNein'.tr,
-              laterButton: 'bewertenSpaeter'.tr,
-              onDismissed: () =>
-                  rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed),
-            );
-          }
-        });
       },
     );
   }
@@ -926,6 +884,25 @@ class _MyHomePageState extends State<MyHomePage> {
   // This method is rerun every time setState is called
   @override
   Widget build(BuildContext context) {
+    print("kkkkkkkk");
+    rateMyApp.init().then((_) {
+      print("rateMyApp");
+      if (rateMyApp.shouldOpenDialog) {
+        print("rateMyApp true0");
+        rateMyApp.showRateDialog(
+          context,
+          title: 'bewertenTitel'.tr,
+          message: 'bewertenText'.tr,
+          rateButton: 'bewertenJetzt'.tr,
+          noButton: 'bewertenNein'.tr,
+          laterButton: 'bewertenSpaeter'.tr,
+          onDismissed: () =>
+              rateMyApp.callEvent(RateMyAppEventType.laterButtonPressed),
+        );
+      }
+    });
+    print("oooooooo");
+
     return Scaffold(
       appBar: AppBar(
           title: Text(

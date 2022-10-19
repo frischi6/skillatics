@@ -37,7 +37,7 @@ dependencies:
 
   numberpicker: ^2.1.1 #für Zahlauswahl die wie beim Timer bei iPhone aussieht
   flutter_multi_select_items: ^0.4.0 #für Farbauswahl
-  rate_my_app: ^1.1.2 #damit User von Zeit zu Zeit nach einer Bewertung gefragt wird
+  rate_my_app: ^1.1.2 #damit User von Zeit zu Zeit nach einer Bewertung der App gefragt wird
   get: #damit app zweisprachig ist
   flutter_launcher_icons: ^0.10.0 #um icon und titel/name auf homebildschirm zu ändern
   flutter_native_splash: ^1.2.3 #für native splash screen

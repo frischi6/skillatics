@@ -26,7 +26,7 @@ class TranslationText extends Translations {
           'Schwarz': 'Schwarz',
           'Gold': 'Gold',
           'Weiss': 'Weiss',
-          'selItems': 'Mit was möchtest du trainieren?',
+          'selItems': 'Mit welchen Elementen möchtest du trainieren?',
           'selAnzFarben': 'Anzahl Farben, die aufs Mal angezeigt werden?',
           'selWechselSek': 'Farbwechsel nach wie vielen Sekunden?',
           'selDurchlauf': 'Dauer eines Durchlaufs?',
