@@ -136,14 +136,6 @@ class _MyHomePageState extends State<MyHomePage> {
    */
   void organizeArrowsColors() {
     this.selectedItems = selectedColors + selectedNumbers + selectedArrows;
-    print("selectedColors:");
-    print(selectedColors);
-    print("selectedNumbers:");
-    print(selectedNumbers);
-    print("selectedArrows:");
-    print(selectedArrows);
-    print("selectedItems");
-    print(selectedItems);
     for (int i = 0; i < selectedItems.length; i++) {
       if (selectedItems[i].length != 6) {
         //selectedArrows.add(selectedItems[i]);
@@ -151,8 +143,6 @@ class _MyHomePageState extends State<MyHomePage> {
             'fefefe'; //weisser hintergrund aber nicht ffffff damit später erkennbar dass dort arrows angezeigt werden müssen
       } //else ist bereits ein hexcode in selectedColors und kein arrow
     }
-    print("selectedItems nur hex");
-    print(selectedItems);
   }
 
   /**
@@ -976,13 +966,12 @@ class _MyHomePageState extends State<MyHomePage> {
               //Checkbox - Mit welchen Farben trainieren
               //SizedBox(height: 20,),
               Text(
-                //'selFarben'.tr,
-                'Mit was möchtest du trainieren?',
+                'selItems'.tr,
                 style: TextStyle(fontSize: 15),
               ),
               SizedBox(height: 18),
               Text(
-                'Farben',
+                'farben'.tr,
                 style: TextStyle(fontStyle: FontStyle.italic),
               ),
               SizedBox(height: 10),
@@ -992,7 +981,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SizedBox(height: 15),
               Text(
-                'Pfeile',
+                'pfeile'.tr,
                 style: TextStyle(fontStyle: FontStyle.italic),
               ),
               SizedBox(height: 10),
@@ -1002,7 +991,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SizedBox(height: 15),
               Text(
-                'Zahlen',
+                'zahlen'.tr,
                 style: TextStyle(fontStyle: FontStyle.italic),
               ),
               SizedBox(height: 10),

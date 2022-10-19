@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       title: 'Skillatics',
       theme: ThemeData(
         primarySwatch: colorCustom,
-        unselectedWidgetColor: Colors.black, //noch nötig?
+        //unselectedWidgetColor: Colors.black, //noch nötig?
       ),
       home: MyHomePage(
         title: 'Skillatics',

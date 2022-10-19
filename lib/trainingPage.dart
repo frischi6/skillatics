@@ -679,6 +679,9 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
     );
   }
 
+  /**
+   * Damit Anzeige in Fusszeile korrekt mit 1 Runde bzw >1 Runden
+   */
   String getRundeSgPl() {
     if (this.anzRounds2 == 1) {
       return this.rundeSg;
