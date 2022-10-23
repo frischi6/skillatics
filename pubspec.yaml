@@ -59,9 +59,11 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_native_splash:
   image: "assets/splash_light.png"
-  background_image: "assets/skillatics_neongruen.png"
-  color_dark: "#000000"
+  color: "#bcfa00"
+  # background_image: "assets/skillatics_neongruen.png"
   image_dark: "assets/splash_dark.png"
+  color_dark: "#000000"
+  
 
 flutter_icons:
   android: true
