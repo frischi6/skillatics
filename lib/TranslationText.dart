@@ -5,8 +5,8 @@ class TranslationText extends Translations {
   // TODO: implement keys
   Map<String, Map<String, String>> get keys => {
         'de_DE': {
-          'fehlerColorsNull': 'Es müssen noch Farben/Pfeile ausgewählt werden.',
-          'fehlerColorsAnz': 'Bitte mehrere Farben auswählen.',
+          'fehlerColorsNull': 'Es müssen noch Elemente ausgewählt werden.',
+          'fehlerColorsAnz': 'Bitte mehrere Elemente auswählen.',
           'fehlerDurchgangNull':
               'Ein Durchgang muss mindestens eine Sekunde dauern.',
           'fehlerWechselDurchlauf':
@@ -52,8 +52,8 @@ class TranslationText extends Translations {
           'bewertenNein': 'NEIN, DANKE',
         },
         'en_US': {
-          'fehlerColorsNull': 'Colors/arrows still need to be selected.',
-          'fehlerColorsAnz': 'Please select multiple colors.',
+          'fehlerColorsNull': 'Items still need to be selected.',
+          'fehlerColorsAnz': 'Please select multiple items.',
           'fehlerDurchgangNull': 'One pass must last at least one second.',
           'fehlerWechselDurchlauf':
               'The color change must be shorter than the duration of one pass.',

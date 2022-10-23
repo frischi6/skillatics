@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(
         title: 'Skillatics',
-        currentCountry: "GB",
+        currentCountry: "GB", //aktuelle Flagge die oben rechts erscheint
       ),
       translations: TranslationText(),
       locale: Locale('de', 'DE'),

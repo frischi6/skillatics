@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:skillatics/custom_icons_icons.dart';
+import 'package:skillatics/skillatics_icon_icons.dart';
 import 'package:skillatics/trainingPage.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -51,8 +52,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
 //Pop-Up in dem User nach Bewertung/Rezession schreiben gefragt wird
   final RateMyApp rateMyApp = RateMyApp(
-    minDays: 0,
-    minLaunches: 1,
+    minDays: 7,
+    minLaunches: 5,
     remindDays: 9,
     remindLaunches: 4,
     //googlePlayIdentifier: https://www.youtube.com/watch?v=aoq5VDku2Bc
@@ -155,6 +156,33 @@ class _MyHomePageState extends State<MyHomePage> {
       content: Center(
         heightFactor: 1.2,
         child: Text('bereit'.tr),
+      ),
+    );
+  }
+
+  void _showSkillaticsInfos() {
+    showDialog(
+      context: context,
+      builder: (_) => skillaticsDialog(),
+    );
+  }
+
+  Widget skillaticsDialog() {
+    return AlertDialog(
+      content: Container(
+        child: Center(
+          child: Column(
+            children: [
+              Text(''),
+              Text('Skillatics Neuroathletik'),
+              Text(''),
+              Text('+41 79 663 48 52'),
+              Text('info@skillatics.ch'),
+              Text('www.skillatics.ch'),
+            ],
+          ),
+        ),
+        height: 120,
       ),
     );
   }
@@ -1196,19 +1224,26 @@ class _MyHomePageState extends State<MyHomePage> {
                 key: Key(keyString), //funktioniert nicht
                 style: TextStyle(color: Colors.red),
               ),
-
               TextButton(
                 child: Text(
                   'start'.tr,
                 ),
                 style: TextButton.styleFrom(
-                    primary: Colors.black,
+                    foregroundColor: Colors.black,
                     side: BorderSide(color: Colors.grey.shade700)),
                 autofocus: true,
                 onPressed: _changeToPage2,
                 onLongPress: _changeToPage2,
               ),
               SizedBox(height: 20),
+              SizedBox(
+                height: 47,
+                child: TextButton(
+                  onPressed: _showSkillaticsInfos,
+                  child: Image.asset(('assets/skillatics_schwarzWeiss.png')),
+                ),
+              ),
+              SizedBox(height: 25),
             ],
           ),
         ),

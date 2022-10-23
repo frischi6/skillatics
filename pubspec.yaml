@@ -60,7 +60,6 @@ dev_dependencies:
 flutter_native_splash:
   image: "assets/splash_light.png"
   color: "#bcfa00"
-  # background_image: "assets/skillatics_neongruen.png"
   image_dark: "assets/splash_dark.png"
   color_dark: "#000000"
   
@@ -81,8 +80,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/skillatics_schwarzWeiss.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -114,4 +113,7 @@ flutter:
       - family: CustomIcons
         fonts:
           - asset: fonts/CustomIcons.ttf
+      - family: SkillaticsIcon
+        fonts:
+          - asset: fonts/SkillaticsIcon.ttf
   
