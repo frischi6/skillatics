@@ -104,17 +104,11 @@ class _RandomColorPage2 extends State<RandomColorPage2> {
   double thicknessVerticalDividerFooter = 0.5;
 
   void initState() {
-    print("1");
     _initializeSettinvariables();
-    print("2");
     _initializeListHeight4Containers();
-    print("3");
     _initializeListWithAllHex();
-    print("4");
     _initializeListSelectedArrows();
-    print("5");
     organizeRound();
-    print("6");
     _timer = Timer.periodic(
         Duration(seconds: 1),
         (Timer timer) => setState(() {
