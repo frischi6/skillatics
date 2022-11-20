@@ -912,11 +912,8 @@ class _MyHomePageState extends State<MyHomePage> {
   // This method is rerun every time setState is called
   @override
   Widget build(BuildContext context) {
-    print("kkkkkkkk");
     rateMyApp.init().then((_) {
-      print("rateMyApp");
       if (rateMyApp.shouldOpenDialog) {
-        print("rateMyApp true0");
         rateMyApp.showRateDialog(
           context,
           title: 'bewertenTitel'.tr,
@@ -929,7 +926,6 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       }
     });
-    print("oooooooo");
 
     return Scaffold(
       appBar: AppBar(

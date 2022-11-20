@@ -40,8 +40,7 @@ dependencies:
   rate_my_app: ^1.1.2 #damit User von Zeit zu Zeit nach einer Bewertung der App gefragt wird
   get: #damit app zweisprachig ist
   flutter_launcher_icons: ^0.10.0 #um icon und titel/name auf homebildschirm zu ändern
-  flutter_native_splash: ^1.2.3 #für native splash screen
-  
+  flutter_native_splash: ^1.2.3 #für native splash screen  
 
 dev_dependencies:
   flutter_test:
