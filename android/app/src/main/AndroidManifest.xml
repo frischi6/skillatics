@@ -3,7 +3,7 @@
    <uses-permission android:name="com.android.vending.BILLING" />
    <application
         android:label="Skillatics"
-        android:name="${applicationName}"
+        android:name="com.training.skillatics"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
