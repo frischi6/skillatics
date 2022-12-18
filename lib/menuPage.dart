@@ -1,10 +1,14 @@
 import 'dart:async'; //damit Timer gebraucht werden kann
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:rate_my_app/rate_my_app.dart';
+import 'package:skillatics/constant.dart';
 import 'package:skillatics/custom_icons_icons.dart';
+import 'package:skillatics/paywall.dart';
 import 'package:skillatics/skillatics_icon_icons.dart';
 import 'package:skillatics/trainingPage.dart';
 
@@ -79,6 +83,54 @@ class _MyHomePageState extends State<MyHomePage> {
   void changeKey() {
     this.keyInt++;
     this.keyString = keyInt.toString();
+  }
+
+  void _checkSubscription() async {
+    CustomerInfo customerInfo = await Purchases.getCustomerInfo();
+
+    if (customerInfo.entitlements.all[entitlementID] != null &&
+        customerInfo.entitlements.all[entitlementID]?.isActive == true) {
+      //customerInfo.entitlements.all[entitlementID].isActive == true){
+      _changeToPage2();
+    } else {
+      Offerings offerings =
+          await Purchases.getOfferings(); //Offering offerings;
+      try {
+        offerings = await Purchases.getOfferings();
+      } on PlatformException catch (e) {
+        await showDialog(
+            context: context,
+            builder: (BuildContext context) => Container(
+                  child: Text('Error'),
+                ));
+        //builder: (BuildContext context) => ShowDialogToDismiss(
+        //    title: "Error", content: e.message, buttonText: 'OK'));
+      }
+
+      if (offerings == null || offerings.current == null) {
+        // offerings are empty, show a message to your user
+      } else {
+        // current offering is available, show paywall
+        await showModalBottomSheet(
+          useRootNavigator: true,
+          isDismissible: true,
+          isScrollControlled: true,
+          backgroundColor: Colors.black,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+          ),
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(
+                builder: (BuildContext context, StateSetter setModalState) {
+              return Paywall(
+                offering: offerings.current!, //offering: offerings.current,
+              );
+            });
+          },
+        );
+      }
+    }
   }
 
   //Wechsel auf Seite 2 mit den angezeigten Farben
@@ -1228,8 +1280,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     foregroundColor: Colors.black,
                     side: BorderSide(color: Colors.grey.shade700)),
                 autofocus: true,
-                onPressed: _changeToPage2,
-                onLongPress: _changeToPage2,
+                //onPressed: _changeToPage2,
+                onPressed: _checkSubscription,
               ),
               SizedBox(height: 20),
               SizedBox(

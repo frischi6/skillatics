@@ -1,9 +1,31 @@
+import 'dart:io'; //um zu checken ob es ios oder android ist
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skillatics/TranslationText.dart';
+import 'package:skillatics/constant.dart';
 import 'package:skillatics/menuPage.dart';
+import 'store_config.dart';
 
 void main() {
+  print('in main');
+  if (Platform.isIOS || Platform.isMacOS) {
+    StoreConfig(
+      store: Store.appleStore,
+      apiKey: appleApiKey,
+    );
+  } else if (Platform.isAndroid) {
+    // Run the app passing --dart-define=AMAZON=true
+    /*const useAmazon = bool.fromEnvironment("amazon");
+    StoreConfig(
+      store: useAmazon ? Store.amazonAppstore : Store.googlePlay,
+      apiKey: useAmazon ? amazonApiKey : googleApiKey,
+    );*/
+    StoreConfig(
+      store: Store.googlePlay,
+      apiKey: googleApiKey,
+    );
+  }
   runApp(MyApp());
 }
 

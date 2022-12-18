@@ -43,6 +43,7 @@ dependencies:
   get: #damit app zweisprachig ist
   flutter_launcher_icons: ^0.10.0 #um icon und titel/name auf homebildschirm zu ändern
   flutter_native_splash: ^1.2.3 #für native splash screen  
+  purchases_flutter: ^4.5.3
 
 dev_dependencies:
   flutter_test:
