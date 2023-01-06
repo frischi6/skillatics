@@ -8,9 +8,12 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:skillatics/constant.dart';
 import 'package:skillatics/custom_icons_icons.dart';
+import 'package:skillatics/model/styles.dart';
 import 'package:skillatics/paywall.dart';
 import 'package:skillatics/skillatics_icon_icons.dart';
 import 'package:skillatics/trainingPage.dart';
+
+import 'components/native_dialog.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({
@@ -54,6 +57,9 @@ class _MyHomePageState extends State<MyHomePage> {
   var selectedNumbers = [];
   var selectedItems = []; //total
 
+//was like that in video from App-Subscription https://www.youtube.com/watch?v=31mM8ozGyE8&t=12s
+  bool _isLoading = false;
+
 //Pop-Up in dem User nach Bewertung/Rezession schreiben gefragt wird
   final RateMyApp rateMyApp = RateMyApp(
     minDays: 5,
@@ -86,26 +92,34 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _checkSubscription() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     CustomerInfo customerInfo = await Purchases.getCustomerInfo();
 
     if (customerInfo.entitlements.all[entitlementID] != null &&
-        customerInfo.entitlements.all[entitlementID]?.isActive == true) {
-      //customerInfo.entitlements.all[entitlementID].isActive == true){
+        customerInfo.entitlements.all[entitlementID].isActive == true) {
+      //appData.currentData = WeatherData.generateData();
       _changeToPage2();
+
+      setState(() {
+        _isLoading = false;
+      });
     } else {
-      Offerings offerings =
-          await Purchases.getOfferings(); //Offering offerings;
+      Offerings offerings;
       try {
         offerings = await Purchases.getOfferings();
       } on PlatformException catch (e) {
         await showDialog(
             context: context,
-            builder: (BuildContext context) => Container(
-                  child: Text('Error'),
-                ));
-        //builder: (BuildContext context) => ShowDialogToDismiss(
-        //    title: "Error", content: e.message, buttonText: 'OK'));
+            builder: (BuildContext context) => ShowDialogToDismiss(
+                title: "Error", content: e.message, buttonText: 'OK'));
       }
+
+      setState(() {
+        _isLoading = false;
+      });
 
       if (offerings == null || offerings.current == null) {
         // offerings are empty, show a message to your user
@@ -115,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
           useRootNavigator: true,
           isDismissible: true,
           isScrollControlled: true,
-          backgroundColor: Colors.black,
+          backgroundColor: kColorBackground,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
           ),
@@ -124,7 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
             return StatefulBuilder(
                 builder: (BuildContext context, StateSetter setModalState) {
               return Paywall(
-                offering: offerings.current!, //offering: offerings.current,
+                offering: offerings.current,
               );
             });
           },

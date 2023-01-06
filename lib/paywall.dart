@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:skillatics/constant.dart';
 import 'package:skillatics/model/singletons_data.dart';
+import 'package:skillatics/model/styles.dart';
 
 class Paywall extends StatefulWidget {
   final Offering offering;
 
-  const Paywall({Key? key, required this.offering}) : super(key: key);
+  const Paywall({Key key, @required this.offering}) : super(key: key);
 
   @override
   _PaywallState createState() => _PaywallState();
@@ -23,16 +24,12 @@ class _PaywallState extends State<Paywall> {
               height: 70.0,
               width: double.infinity,
               decoration: const BoxDecoration(
-                  color: Colors.black,
+                  color: kColorBar,
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(25.0))),
               child: const Center(
-                  child: Text('✨ Magic Weather Premium',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ))),
+                  child:
+                      Text('✨ Magic Weather Premium', style: kTitleTextStyle)),
             ),
             const Padding(
               padding:
@@ -40,11 +37,7 @@ class _PaywallState extends State<Paywall> {
               child: SizedBox(
                 child: Text(
                   'MAGIC WEATHER PREMIUM',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16,
-                  ),
+                  style: kDescriptionTextStyle,
                 ),
                 width: double.infinity,
               ),
@@ -61,13 +54,8 @@ class _PaywallState extends State<Paywall> {
                           CustomerInfo customerInfo =
                               await Purchases.purchasePackage(
                                   myProductList[index]);
-                          //appData.entitlementIsActive = customerInfo.entitlements.all[entitlementID].isActive;
-                          if (customerInfo
-                                  .entitlements.all[entitlementID]?.isActive !=
-                              null) {
-                            appData.entitlementIsActive = customerInfo
-                                .entitlements.all[entitlementID]!.isActive;
-                          }
+                          appData.entitlementIsActive = customerInfo
+                              .entitlements.all[entitlementID].isActive;
                         } catch (e) {
                           print(e);
                         }
@@ -77,27 +65,16 @@ class _PaywallState extends State<Paywall> {
                       },
                       title: Text(
                         myProductList[index].storeProduct.title,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+                        style: kTitleTextStyle,
                       ),
                       subtitle: Text(
                         myProductList[index].storeProduct.description,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 16,
-                        ).copyWith(fontSize: 10),
+                        style: kDescriptionTextStyle.copyWith(
+                            fontSize: kFontSizeSuperSmall),
                       ),
-                      trailing:
-                          Text(myProductList[index].storeProduct.priceString,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ))),
+                      trailing: Text(
+                          myProductList[index].storeProduct.priceString,
+                          style: kTitleTextStyle)),
                 );
               },
               shrinkWrap: true,
@@ -109,11 +86,7 @@ class _PaywallState extends State<Paywall> {
               child: SizedBox(
                 child: Text(
                   footerText,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16,
-                  ),
+                  style: kDescriptionTextStyle,
                 ),
                 width: double.infinity,
               ),

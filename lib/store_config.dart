@@ -1,15 +1,13 @@
 import 'package:flutter/foundation.dart';
-import 'package:skillatics/constant.dart';
 
 enum Store { appleStore, googlePlay, amazonAppstore }
 
 class StoreConfig {
   final Store store;
   final String apiKey;
-  static StoreConfig _instance = StoreConfig._internal(
-      Store.googlePlay, googleApiKey); //static StoreConfig _instance;
+  static StoreConfig _instance;
 
-  factory StoreConfig({required Store store, required String apiKey}) {
+  factory StoreConfig({@required Store store, @required String apiKey}) {
     _instance ??= StoreConfig._internal(store, apiKey);
     return _instance;
   }
@@ -23,4 +21,6 @@ class StoreConfig {
   static bool isForAppleStore() => _instance.store == Store.appleStore;
 
   static bool isForGooglePlay() => _instance.store == Store.googlePlay;
+
+  static bool isForAmazonAppstore() => _instance.store == Store.amazonAppstore;
 }
